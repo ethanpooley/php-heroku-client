@@ -20,14 +20,14 @@ jobs:
         extensions: mbstring, curl
         tools: php-cs-fixer, phpunit:${{ matrix.phpunit-versions }}
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -55,7 +55,7 @@ jobs:
         coverage: xdebug
         tools: php-cs-fixer, phpunit
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis.
 
@@ -78,7 +78,7 @@ jobs:
       run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' logs/clover.xml
 
     - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@master
+      uses: SonarSource/sonarqube-scan-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any.
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
